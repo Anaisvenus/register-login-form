@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <title>REGISTER</title>
+        <script> 
+            function checkPwd(form) {
+                pwd = document.getElementById("pwd").value;
+                pswd = document.getElementById("pswd").value;
+                if (pswd != pwd) {
+                    alert("Passwords do not match!");
+                    return false;
+                }
+                return true;
+            }
+            </script>
+            <script src="connection.js"></script>
+        </head>
+        
+    <body onload="document.form.email.focus()"
+    class=" h-14 bg-gradient-to-r from-violet-700 to-fuchsia-300 text-center ">
+    
+    <!-- <form onsubmit="checkPwd(this)"
+        onsubmit="account_saving()" name="form"
+        action="" method="post" class="bg-white w-96 h-screen "> -->
+        <form class="bg-white w-96 h-screen" >
+            <div class="test" class=" h-screen">
+                
+               
+                <div>
+                    <label class="indent-5 text-purple-500 text-xl" for="name">
+                        Username
+                    </label>
+                    <br>
+                    <input
+                    class="bg-purple-500 rounded w-80 p-2 
+                    hover:bg-purple-300 text-xl"
+                    id="name" name="name" type="text"
+                    placeholder="Enter username" required>
+                </div>
+                <br>
+
+               
+                <div>
+                    <label class="text-purple-500 text-xl" 
+                    name="form" for="email">
+                    E-mail
+                    </label>
+                    <br>
+                    <input
+                    class="bg-purple-500 rounded w-80 p-2 
+                    hover:bg-purple-300 text-xl"
+                     id="email" type="text" name="email"
+                     placeholder="Enter e-mail" required>
+                </div>
+                <br>
+
+               
+                <div>
+                    <label class="text-purple-500 text-xl" for="password">
+                        Password
+                    </label>
+                    <br>
+                    <input
+                    class="bg-purple-500 rounded w-80 p-2 
+                    hover:bg-purple-300 text-xl"
+                    id="pwd" type="text" name="pwd"
+                    placeholder="Enter password" maxlength="12" required>
+                </div>
+                <br>
+
+               
+                <div>
+                    <label class="text-purple-500 text-xl" for="password">
+                        ConfirmPassword
+                    </label>
+                    <br>
+                    <input
+                    class="bg-purple-500 rounded w-80 p-2
+                    hover:bg-purple-300 text-xl"
+                    id="pswd" type="text" name="pswd"
+                    placeholder="Confirm password" maxlength="12" required>
+                </div>
+                <br>
+                <br>
+                <br>
+                
+               
+                <button type="submit"
+                 class="bg-purple-200 text-purple-500 w-80 p-6 
+                 hover:bg-purple-300 text-xl hover:text-2xl hover:uppercase"
+                 onclick="valid_email(document.form.email)"
+                 onclick="checkPwd(this)"
+                 onclick="account_saving(this)">Register
+                </button>
+                
+               
+                <br>
+                <br>
+                <h1 class="text-purple-500 text-xl">
+                    Already have an account? 
+                    <a class="hover:underline decoration-wavy"
+                    href="login.html">Login here
+                </a>
+                </h1>
+            </div>
+        </form>
+        <script src="email_valid.js"></script>
+    </body>
+</html>
+
+<script>
+    function account_saving (form) {
+        let mysql = require('mysql');
+        let db = require('database');
+                            
+        let connection = mysql.createConnection({
+            host: "localhost",
+            user: "root",
+            password: "seecret",
+            database: "java_base"
+        });
+
+        connection.connect(function(err) {
+        if (err) throw err;
+            console.log('Connected!');
+        })
+        
+        var obj = {
+            name : document.getElementById("name"),
+            email : document.getElementById("email"),
+            pwd : document.getElementById("pwd"),
+            // pswd : document.getElementById("pswd")
+        }
+
+        connection.query('INSERT INTO user SET ?', obj, function(err,res){
+            if(err) throw err;
+            console.log('Last record insert id:', res.insertId);
+        });
+
+                
+        // return console.log(name, email, pwd);
+        // var sql = "INSERT INTO user (username, email, pwd) VALUES (name, email, pwd)";
+        // connection.query(sql, function (err, result) {
+            // if (err) throw err;
+        // });
+        module.exports = connection;
+    }
+</script>
